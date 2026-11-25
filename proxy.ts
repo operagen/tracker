@@ -25,7 +25,11 @@ export async function proxy(request: NextRequest) {
 
   const isLogin = request.nextUrl.pathname === "/login";
   if (!user && !isLogin) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const to = new URL("/login", request.url);
+    if (request.nextUrl.pathname.startsWith("/oauth/")) {
+      to.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
+    }
+    return NextResponse.redirect(to);
   }
   if (user && isLogin) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -35,5 +39,5 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // /mcp has its own bearer-token check.
-  matcher: ["/((?!mcp|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!mcp|\\.well-known|_next/static|_next/image|favicon.ico).*)"],
 };
