@@ -8,12 +8,14 @@ async function signIn(formData: FormData) {
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
   });
+  const next = String(formData.get("next") ?? "");
   if (error) redirect("/login?error=1");
-  redirect("/");
+  // Only same-site /oauth/ paths, so this can't be used to bounce to another site.
+  redirect(/^\/oauth\/[\w\/?=&%.-]*$/.test(next) ? next : "/");
 }
 
-export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  const { error } = await searchParams;
+export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
+  const { error, next } = await searchParams;
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex h-4 border-b-[3px] border-black" aria-hidden="true">
@@ -23,6 +25,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
       </div>
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <form action={signIn} aria-labelledby="t" className="flex w-full max-w-110 flex-col border-[3px] border-black">
+          <input type="hidden" name="next" value={next ?? ""} />
           <h1 id="t" className="m-0 border-b-[3px] border-black p-6 text-[40px] leading-none font-bold tracking-tight uppercase">
             Tracker
           </h1>
