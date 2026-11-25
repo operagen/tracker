@@ -1,12 +1,12 @@
 {
-  "id": "94b9782e-b87c-4433-ab31-4daae9411a2e",
+  "id": "191ed6b2-00bf-49ee-9bbd-8fa16f802a64",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.activities": {
+    "tracker.activities": {
       "name": "activities",
-      "schema": "",
+      "schema": "tracker",
       "columns": {
         "id": {
           "name": "id",
@@ -63,9 +63,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.goal_activities": {
+    "tracker.goal_activities": {
       "name": "goal_activities",
-      "schema": "",
+      "schema": "tracker",
       "columns": {
         "goal_id": {
           "name": "goal_id",
@@ -86,6 +86,7 @@
           "name": "goal_activities_goal_id_goals_id_fk",
           "tableFrom": "goal_activities",
           "tableTo": "goals",
+          "schemaTo": "tracker",
           "columnsFrom": [
             "goal_id"
           ],
@@ -99,6 +100,7 @@
           "name": "goal_activities_activity_id_activities_id_fk",
           "tableFrom": "goal_activities",
           "tableTo": "activities",
+          "schemaTo": "tracker",
           "columnsFrom": [
             "activity_id"
           ],
@@ -123,9 +125,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.goals": {
+    "tracker.goals": {
       "name": "goals",
-      "schema": "",
+      "schema": "tracker",
       "columns": {
         "id": {
           "name": "id",
@@ -182,9 +184,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.progress_updates": {
+    "tracker.progress_updates": {
       "name": "progress_updates",
-      "schema": "",
+      "schema": "tracker",
       "columns": {
         "id": {
           "name": "id",
@@ -225,6 +227,7 @@
           "name": "progress_updates_activity_id_activities_id_fk",
           "tableFrom": "progress_updates",
           "tableTo": "activities",
+          "schemaTo": "tracker",
           "columnsFrom": [
             "activity_id"
           ],
@@ -243,7 +246,9 @@
     }
   },
   "enums": {},
-  "schemas": {},
+  "schemas": {
+    "tracker": "tracker"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

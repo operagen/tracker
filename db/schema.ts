@@ -1,5 +1,5 @@
 import {
-  pgTable,
+  pgSchema,
   uuid,
   text,
   date,
@@ -8,10 +8,13 @@ import {
   primaryKey,
 } from "drizzle-orm/pg-core";
 
+// Own Postgres schema: this database is shared with another app.
+export const tracker = pgSchema("tracker");
+
 export const goalStatuses = ["active", "paused", "done", "dropped"] as const;
 export const activityStatuses = ["planned", "in_progress", "done", "skipped"] as const;
 
-export const goals = pgTable("goals", {
+export const goals = tracker.table("goals", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   description: text("description"),
@@ -21,7 +24,7 @@ export const goals = pgTable("goals", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const activities = pgTable("activities", {
+export const activities = tracker.table("activities", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   description: text("description"),
@@ -31,7 +34,7 @@ export const activities = pgTable("activities", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const goalActivities = pgTable(
+export const goalActivities = tracker.table(
   "goal_activities",
   {
     goalId: uuid("goal_id").notNull().references(() => goals.id, { onDelete: "cascade" }),
@@ -40,7 +43,7 @@ export const goalActivities = pgTable(
   (t) => [primaryKey({ columns: [t.goalId, t.activityId] })],
 );
 
-export const progressUpdates = pgTable("progress_updates", {
+export const progressUpdates = tracker.table("progress_updates", {
   id: uuid("id").primaryKey().defaultRandom(),
   activityId: uuid("activity_id").notNull().references(() => activities.id, { onDelete: "cascade" }),
   note: text("note").notNull(),

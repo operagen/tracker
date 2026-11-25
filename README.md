@@ -5,6 +5,7 @@ Goals and daily tracker. View-only web UI; an agent (Claude) writes through MCP.
 - UI: Today, Goals, Activity. Supabase Auth, single user.
 - MCP: Streamable HTTP at `/mcp`, `Authorization: Bearer $MCP_TOKEN`.
 - Stack: Next.js (App Router), Supabase Postgres, Drizzle.
+- Tables live in their own Postgres schema, `tracker`, because the database is shared with another app.
 
 ## Setup
 Copy `.env.example` to `.env.local` and fill it in, then:

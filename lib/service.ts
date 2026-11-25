@@ -83,7 +83,7 @@ export async function listActivities(
     f.from && sql`${activities.scheduledDate} >= ${f.from}`,
     f.to && sql`${activities.scheduledDate} <= ${f.to}`,
     f.goalId &&
-      sql`${activities.id} in (select activity_id from goal_activities where goal_id = ${f.goalId})`,
+      sql`${activities.id} in (select ${goalActivities.activityId} from ${goalActivities} where ${goalActivities.goalId} = ${f.goalId})`,
   ].filter(Boolean) as ReturnType<typeof eq>[];
   return db
     .select()
